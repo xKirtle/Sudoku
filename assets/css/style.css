@@ -247,6 +247,7 @@ i {
 }
 
 .Group {
+    background-color: #232323;
     outline: solid 1px #3265a8;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -257,7 +258,7 @@ i {
 }
 
 .Cell {
-    background-color: #232323;
+    background-color: inherit;
     outline: solid 1px #444;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -273,12 +274,24 @@ i {
 }
 
 .CellActive {
-    background-color: #343434;
+    background-color: #333333 !important;
     /* background-color: #404040; */
 }
 
+.CellActive:hover {
+    background-color: #333333 !important;
+}
+
+.CellSubActive {
+    background-color: #292929;
+}
+
+.CellSubActive:hover {
+    background-color: #292929;
+}
+
 .CellValue {
-    margin-top: 6px;
+    padding-top: 6px;
     font-size: 40px;
     cursor: default;
     user-select: none;
@@ -304,7 +317,6 @@ i {
 }
 
 .ControlNumbers {
-    outline: solid 1px #3265a8;
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     grid-template-rows: 1fr;
@@ -333,17 +345,4 @@ i {
     gap: 0px 0px;
     grid-template-areas: "Pencil Eraser";
     grid-area: Options;
-}
-
-.Modes {
-    padding-top: 40px;
-    outline: solid 1px #444;
-    font-size: 40px;
-    cursor: default;
-    user-select: none;
-}
-
-.Modes:hover {
-    background-color: #292929;
-    outline: solid 1px #3265a8;
 }
