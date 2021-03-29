@@ -38,6 +38,7 @@ let board = [];
             //cellValue.classList.add("hidden-pen");
             if (Math.random() >= 0.7) {
                 cellObj.value = j;
+                cellObj.readOnly = true;
                 cellValue.textContent = j;
             }
 
@@ -205,7 +206,7 @@ function highlightSelectedCell() {
 
 function setSelectedCellValue(value) {
     let selCellData = board[groupIndex].cells[cellIndex];
-    if (selectedCell == null || selectedCell.readOnly) return;
+    if (selectedCell == null || selCellData.readOnly) return;
 
     //Eraser will set the value to null
     if (!isPencilEnabled || value == null) {
