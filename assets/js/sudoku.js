@@ -240,8 +240,7 @@ function renderCellValues() {
                 tempCell.children[k].classList.add("hidden-pen");
 
             if (!tempCellData.pencilEnabled) {
-                if (!tempCellData.readOnly)
-                    tempCell.children[0].textContent = tempCellData.value;
+                tempCell.children[0].textContent = tempCellData.value;
             } else {
                 for (let k = 0; k < 9; k++) {
                     if (tempCellData.pencilValues[k])
@@ -252,23 +251,84 @@ function renderCellValues() {
     }
 }
 
-//Unused?
-function renderCellValue() {
-    //Updates the value of the selectedCell in the html element
+// //Unused?
+// function renderCellValue() {
+//     //Updates the value of the selectedCell in the html element
 
-    let selCellData = board[groupIndex].cells[cellIndex];
-    //Remove previous data in the selected cell
-    selectedCell.children[0].textContent = null;
-    for (let i = 1; i < 10; i++)
-        selectedCell.children[i].classList.add("hidden-pen");
+//     let selCellData = board[groupIndex].cells[cellIndex];
+//     //Remove previous data in the selected cell
+//     selectedCell.children[0].textContent = null;
+//     for (let i = 1; i < 10; i++)
+//         selectedCell.children[i].classList.add("hidden-pen");
 
-    if (!isPencilEnabled) {
-        if (!selCellData.readOnly)
-            selectedCell.children[0].textContent = selCellData.value;
-    } else {
-        for (let i = 0; i < 9; i++) {
-            if (selCellData.pencilValues[i])
-                selectedCell.children[i + 1].classList.remove("hidden-pen");
+//     if (!isPencilEnabled) {
+//         if (!selCellData.readOnly)
+//             selectedCell.children[0].textContent = selCellData.value;
+//     } else {
+//         for (let i = 0; i < 9; i++) {
+//             if (selCellData.pencilValues[i])
+//                 selectedCell.children[i + 1].classList.remove("hidden-pen");
+//         }
+//     }
+// }
+
+//Check board validation and generate board
+
+function validGroup(index) {
+    let groupSet = new Set();
+    for (let i = 0; i < 9; i++) {
+        if (board[index].cells[i].value != null)
+            groupSet.add(board[index].cells[i].value);
+    }
+
+    return groupSet.size == 9;
+}
+
+function validRow(groupIndex, cellIndex) {
+    let rowSet = new Set();
+    let groupRow = Math.trunc(groupIndex / 3) * 3;
+    let cellRow = Math.trunc(cellIndex / 3) * 3;
+
+    for (let i = 0; i < 3; i++)
+        for (let j = 0; j < 3; j++)
+            if (board[groupRow + i].cells[cellRow + j].value != null)
+                rowSet.add(board[groupRow + i].cells[cellRow + j].value);
+
+    return rowSet.size == 9;
+}
+
+function validColumn(groupIndex, cellIndex) {
+    let columnSet = new Set();
+    let groupColumn = groupIndex % 3;
+    let cellColumn = cellIndex % 3;
+
+    for (let i = 0; i < 3; i++)
+        for (let j = 0; j < 3; j++)
+            if (board[groupColumn + (i * 3)].cells[cellColumn + (j * 3)].value != null)
+                columnSet.add(board[groupColumn + (i * 3)].cells[cellColumn + (j * 3)].value);
+
+    return columnSet.size == 9;
+}
+
+function validBoard() {
+    //Groups
+    for (let i = 0; i < 9; i++) {
+        if (!validGroup(i)) return false;
+    }
+
+    //Rows
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (!validRow(i * 3, j * 3)) return false;
         }
     }
+
+    //Columns
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (!validColumn(i, j)) return false;
+        }
+    }
+
+    return true;
 }
